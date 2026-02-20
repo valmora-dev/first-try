@@ -1,14 +1,165 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 
 <head>
-    <title>Personal pages</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi lời từ chối cực gắt</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 90%;
+            transition: all 0.3s ease;
+        }
+
+        h1 {
+            color: #ff4757;
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .buttons {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 30px;
+            height: 100px;
+        }
+
+        button {
+            padding: 12px 25px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        #btn-yes {
+            background-color: #2ed573;
+            color: white;
+            position: relative;
+        }
+
+        #btn-no {
+            background-color: #ff4757;
+            color: white;
+        }
+
+        /* Hiệu ứng rung nhẹ cho container */
+        .shake {
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0% {
+                transform: translateX(0);
+            }
+
+            25% {
+                transform: translateX(-5px);
+            }
+
+            50% {
+                transform: translateX(5px);
+            }
+
+            75% {
+                transform: translateX(-5px);
+            }
+
+            100% {
+                transform: translateX(0);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <a href="page2.html">click it</a>
+    <div class="container" id="main-card">
+        <h1 id="question">Bạn có tha lỗi cho tớ không? 🥺</h1>
+        <div class="buttons">
+            <button id="btn-yes">Đồng ý</button>
+            <button id="btn-no">KHÔNG!</button>
+        </div>
+    </div>
 
+    <script>
+        const btnYes = document.getElementById('btn-yes');
+        const btnNo = document.getElementById('btn-no');
+        const question = document.getElementById('question');
+        const card = document.getElementById('main-card');
+
+        let noClickCount = 0;
+        const messages = [
+            "Ơ kìa...",
+            "Nghĩ lại đi mà!",
+            "Bạn chắc chưa?",
+            "Lạnh lùng thế?",
+            "Nút 'KHÔNG' to quá rồi kìa!",
+            "Bấm 'Đồng ý' đi cho xong..."
+        ];
+
+        // 1. Hiệu ứng nút "Đồng ý" chạy trốn khi di chuột vào (trên PC) hoặc chạm (Mobile)
+        const moveButton = () => {
+            const x = Math.random() * (window.innerWidth - btnYes.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btnYes.offsetHeight);
+
+            btnYes.style.position = 'absolute';
+            btnYes.style.left = `${x}px`;
+            btnYes.style.top = `${y}px`;
+        };
+
+        btnYes.addEventListener('mouseover', moveButton);
+        btnYes.addEventListener('touchstart', moveButton);
+
+        // 2. Nút "Không" to dần và đổi chữ khi bấm
+        btnNo.addEventListener('click', () => {
+            noClickCount++;
+
+            // Phóng to nút Không
+            const currentSize = 18 + (noClickCount * 5);
+            btnNo.style.fontSize = `${currentSize}px`;
+            btnNo.style.padding = `${12 + noClickCount * 2}px ${25 + noClickCount * 4}px`;
+
+            // Đổi câu hỏi trêu chọc
+            if (noClickCount < messages.length) {
+                question.innerText = messages[noClickCount];
+            } else {
+                question.innerText = "Thôi xong, bạn quá lỳ!";
+            }
+
+            // Hiệu ứng rung màn hình
+            card.classList.add('shake');
+            setTimeout(() => card.classList.remove('shake'), 500);
+        });
+
+        // 3. Khi cuối cùng họ cũng bấm được (hoặc mình cho phép bấm)
+        // Ở đây mình làm nút Yes gần như không thể bấm, nhưng nếu bấm được:
+        btnYes.addEventListener('click', () => {
+            alert("Biết ngay là bạn tốt mà! ❤️");
+            document.body.innerHTML = "<h1>Cảm ơn bạn nhé! 🥰</h1>";
+        });
+    </script>
 </body>
 
 </html>
